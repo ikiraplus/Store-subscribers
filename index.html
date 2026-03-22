@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مشتركين المتجر</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+*{box-sizing:border-box;}
+body{margin:0;padding:0 0 60px;font-family:'Tajawal',sans-serif;background:linear-gradient(-45deg,#0b0c10,#1f2833,#0f1b29,#05080f);background-size:400% 400%;animation:bg 15s ease infinite;color:#fff;min-height:100vh;}
+@keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.title{text-align:center;font-size:36px;font-weight:800;margin-top:30px;color:#66fcf1;text-shadow:0 0 20px rgba(102,252,241,0.4);}
+.logo{display:block;margin:18px auto;width:120px;border-radius:50%;border:2px solid rgba(102,252,241,0.3);box-shadow:0 0 30px rgba(102,252,241,0.2);transition:transform 0.4s;}
+.logo:hover{transform:scale(1.05) rotate(5deg);}
+.toolbar{display:flex;justify-content:center;align-items:center;gap:14px;margin:26px 20px;flex-wrap:wrap;}
+.search-box input{width:320px;max-width:100%;padding:14px 22px;font-size:15px;font-family:'Tajawal',sans-serif;border-radius:30px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);color:#fff;outline:none;transition:all 0.3s;}
+.search-box input::placeholder{color:rgba(255,255,255,0.45);}
+.search-box input:focus{border-color:#66fcf1;background:rgba(255,255,255,0.1);box-shadow:0 0 20px rgba(102,252,241,0.2);}
+.add-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#66fcf1,#45a29e);color:#0b0c10;border:none;border-radius:30px;padding:14px 26px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 20px rgba(102,252,241,0.35);transition:all 0.3s;white-space:nowrap;}
+.add-btn:hover{transform:translateY(-2px);box-shadow:0 7px 25px rgba(102,252,241,0.5);}
+.card{width:90%;max-width:860px;margin:20px auto;border-radius:20px;overflow:hidden;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);animation:up 0.6s ease forwards;opacity:0;transform:translateY(30px);}
+.card:hover{transform:translateY(-5px) scale(1.01);border-color:rgba(102,252,241,0.3);}
+@keyframes up{to{opacity:1;transform:translateY(0);}}
+.card-body{display:flex;flex-wrap:wrap;}
+.right{width:32%;background:linear-gradient(135deg,rgba(102,252,241,0.05),rgba(69,162,158,0.1));border-left:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px 16px;text-align:center;}
+.cname{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px;}
+.cseq{font-size:14px;font-weight:600;color:#45a29e;background:rgba(0,0,0,0.3);padding:4px 14px;border-radius:15px;border:1px solid rgba(69,162,158,0.3);}
+.left{width:68%;padding:18px 26px;display:flex;flex-direction:column;justify-content:center;}
+.row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed rgba(255,255,255,0.1);}
+.row:last-child{border-bottom:none;}
+.label{color:#c5c6c7;font-size:14px;font-weight:500;}
+.value{color:#66fcf1;font-size:15px;font-weight:700;text-align:left;}
+.card-footer{width:100%;display:flex;justify-content:flex-end;gap:10px;padding:10px 20px 14px;border-top:1px solid rgba(255,255,255,0.05);background:rgba(0,0,0,0.1);}
+.print-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#66fcf1,#45a29e);color:#0b0c10;border:none;border-radius:25px;padding:9px 20px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(102,252,241,0.3);transition:all 0.3s;}
+.print-btn:hover{transform:translateY(-2px);}
+.delete-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(255,80,80,0.1);color:#ff6b6b;border:1px solid rgba(255,107,107,0.3);border-radius:25px;padding:9px 18px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s;}
+.delete-btn:hover{background:rgba(255,80,80,0.2);}
+@media(max-width:640px){.right{width:100%;border-left:none;border-bottom:1px solid rgba(255,255,255,0.05);}.left{width:100%;}}
+
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9000;justify-content:center;align-items:flex-start;padding:20px;backdrop-filter:blur(8px);overflow-y:auto;}
+.modal-overlay.active{display:flex;flex-direction:column;align-items:center;}
+
+/* ADD MODAL */
+#add-modal .modal-box{width:100%;max-width:540px;background:#0f1720;border:1px solid rgba(102,252,241,0.18);border-radius:22px;padding:30px 34px;box-shadow:0 20px 60px rgba(0,0,0,0.7);margin:auto;}
+.modal-title{font-size:20px;font-weight:800;color:#66fcf1;margin:0 0 22px;text-align:center;}
+.form-row{display:flex;gap:12px;margin-bottom:14px;}
+.form-row .form-group{flex:1;margin-bottom:0;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#c5c6c7;margin-bottom:6px;}
+.form-group label .req{color:#66fcf1;margin-left:3px;}
+.form-control{width:100%;padding:11px 14px;font-family:'Tajawal',sans-serif;font-size:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:11px;color:#fff;outline:none;transition:all 0.3s;appearance:none;-webkit-appearance:none;}
+.form-control:focus{border-color:#66fcf1;background:rgba(102,252,241,0.07);box-shadow:0 0 0 3px rgba(102,252,241,0.1);}
+.form-control::placeholder{color:rgba(255,255,255,0.3);}
+select.form-control{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2366fcf1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;padding-left:34px;cursor:pointer;}
+select.form-control option{background:#1f2833;color:#fff;}
+.fsep{font-size:11px;font-weight:700;color:#45a29e;letter-spacing:1px;margin:18px 0 12px;display:flex;align-items:center;gap:8px;}
+.fsep::before,.fsep::after{content:'';flex:1;height:1px;background:rgba(69,162,158,0.3);}
+.tg-box{background:rgba(102,252,241,0.04);border:1px solid rgba(102,252,241,0.15);border-radius:10px;padding:10px 14px;font-size:12.5px;color:#9ecfcd;font-family:monospace;direction:ltr;line-height:2;}
+.tg-box .tg-val{color:#66fcf1;font-weight:700;}
+.info-box{background:rgba(102,252,241,0.05);border:1px dashed rgba(102,252,241,0.2);border-radius:9px;padding:9px 13px;font-size:12px;color:#9ecfcd;margin-top:7px;}
+.form-actions{display:flex;gap:12px;margin-top:20px;}
+.btn-primary{flex:1;padding:13px;background:linear-gradient(135deg,#66fcf1,#45a29e);color:#0b0c10;border:none;border-radius:13px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 15px rgba(102,252,241,0.3);}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-secondary{padding:13px 20px;background:rgba(255,255,255,0.07);color:#c5c6c7;border:1px solid rgba(255,255,255,0.15);border-radius:13px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s;}
+.btn-secondary:hover{background:rgba(255,255,255,0.13);}
+
+/* ══ INVOICE PAPER ══ */
+#invoice-modal{z-index:9999;}
+#invoice-paper{
+  position:relative;width:100%;max-width:570px;
+  background:#fff;border-radius:20px 20px 0 0;
+  padding:28px 34px 24px;
+  font-family:'Tajawal',sans-serif;direction:rtl;
+  overflow:hidden;box-shadow:0 25px 70px rgba(0,0,0,0.6);
+}
+.watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;}
+.watermark img{width:240px;opacity:0.07;transform:none;}
+.inv-content{position:relative;z-index:1;}
+
+/* رأس */
+.inv-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid #ebebeb;}
+.inv-logo{width:54px;height:54px;border-radius:12px;object-fit:cover;border:2.5px solid #45a29e;box-shadow:0 3px 14px rgba(69,162,158,0.25);}
+.inv-title{font-size:19px;font-weight:800;color:#1a1a2e;margin:0 0 3px;}
+.inv-activation{font-size:11px;color:#45a29e;font-weight:700;margin:0 0 2px;}
+.inv-issue{font-size:10px;color:#999;font-weight:700;margin:0;}
+
+/* بانر اسم */
+.inv-name-row{background:linear-gradient(135deg,#f0fffe,#e3f8f7);border-right:4px solid #45a29e;border-radius:10px;padding:10px 14px;margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;}
+.inv-sname{font-size:17px;font-weight:800;color:#1a1a2e;}
+.inv-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.inv-seq-b{font-size:11px;color:#fff;background:#45a29e;padding:2px 11px;border-radius:18px;font-weight:700;}
+.inv-type-b{font-size:10px;color:#45a29e;border:1px solid #45a29e;padding:2px 8px;border-radius:10px;font-weight:600;}
+
+/* صفوف */
+.inv-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #eee;}
+.inv-row:last-of-type{border-bottom:none;}
+.inv-lbl{font-size:12px;color:#999;font-weight:700;display:inline-flex;align-items:center;gap:6px;line-height:1;}
+.inv-lbl .d{width:5px;height:5px;min-width:5px;background:#45a29e;border-radius:50%;display:inline-block;vertical-align:middle;position:relative;top:0;}
+.inv-val{font-size:13px;font-weight:700;color:#1a1a2e;}
+.inv-val.gold{color:#8a6800;}
+.inv-val.mono{font-family:monospace;font-size:10px;color:#555;direction:ltr;word-break:break-all;max-width:240px;text-align:right;}
+
+/* ضمان */
+.wblock{background:#f7fffe;border:1px solid #cceee9;border-radius:10px;padding:9px 13px;margin:10px 0;}
+.wrow{display:flex;justify-content:space-between;align-items:center;padding:3px 0;}
+.wlbl{font-size:11px;color:#888;font-weight:700;}
+.wval{font-size:12px;font-weight:800;color:#1a1a2e;display:flex;align-items:center;gap:6px;}
+.wb{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:9px;font-size:11px;font-weight:700;}
+.wb.ok{background:#e6faf3;color:#1a7a4a;}
+.wb.exp{background:#fff0f0;color:#cc1111;}
+
+/* QR + تذييل مدمج */
+.inv-footer{margin-top:12px;padding-top:10px;border-top:2px solid #ebebeb;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.inv-footer-left{display:flex;flex-direction:column;align-items:flex-start;gap:6px;}
+.inv-footer-txt{font-size:10px;color:#aaa;font-weight:600;}
+.inv-stamp{font-size:10.5px;color:#45a29e;font-weight:800;border:1.5px solid #45a29e;padding:3px 12px;border-radius:7px;}
+
+/* إطار الباركود */
+.inv-qr-frame{
+  display:inline-flex;flex-direction:column;align-items:center;gap:5px;
+  background:linear-gradient(135deg,#f0fffe,#e3f8f7);
+  border:2px solid #45a29e;border-radius:12px;
+  padding:10px 12px 7px;
+  box-shadow:0 3px 10px rgba(69,162,158,0.2);
+  position:relative;flex-shrink:0;
+}
+.inv-qr-frame::before{
+  content:'QR';position:absolute;top:-8px;right:10px;
+  background:#45a29e;color:#fff;font-size:8.5px;font-weight:800;
+  padding:1px 7px;border-radius:5px;letter-spacing:1px;
+}
+.inv-qr-label{font-size:9px;color:#45a29e;font-weight:700;letter-spacing:0.4px;}
+#qr-holder{line-height:0;}
+#qr-holder img,#qr-holder canvas{width:80px!important;height:80px!important;border-radius:3px;}
+
+/* أزرار */
+.inv-btns{display:flex;justify-content:center;gap:12px;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 20px 20px;width:100%;max-width:570px;}
+.inv-btns button{font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;border:none;border-radius:25px;padding:12px 28px;cursor:pointer;transition:all 0.3s;}
+.btn-save{background:linear-gradient(135deg,#66fcf1,#45a29e);color:#0b0c10;box-shadow:0 4px 15px rgba(102,252,241,0.3);}
+.btn-save:hover{transform:translateY(-2px);}
+.btn-close{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.2)!important;}
+.btn-close:hover{background:rgba(255,255,255,0.15);}
+</style>
+</head>
+<body>
+
+<div class="title">مشتركين المتجر</div>
+<img src="https://i.ibb.co/FqnVfd3r/1773979935784.png" class="logo" crossorigin="anonymous">
+
+<div class="toolbar">
+  <div class="search-box">
+    <input type="text" id="search" placeholder="ابحث عن اسم المشترك..." onkeyup="searchCards()">
+  </div>
+  <button class="add-btn" onclick="openAddModal()">➕ إضافة عميل</button>
+</div>
+
+<div id="cards-container">
+  <!-- كرت مثال -->
+  <div class="card"
+    data-name="نيرمين علي" data-seq="81" data-user="@neero20"
+    data-type="شهادة iOS" data-pkg="الباقة الذهبية — 25 الف"
+    data-wm="12" data-start="2025-03-28"
+    data-udid="00008140-000269EE36FB001C" data-tgid="">
+    <div class="card-body">
+      <div class="right">
+        <div class="cname">نيرمين علي</div>
+        <div class="cseq">تسلسل #81</div>
+      </div>
+      <div class="left">
+        <div class="row"><div class="label">حسابه / رقمه</div><div class="value" dir="ltr">@neero20</div></div>
+        <div class="row"><div class="label">نوع الاشتراك</div><div class="value">شهادة iOS</div></div>
+        <div class="row"><div class="label">الباقة</div><div class="value" style="color:#ffd700;">الباقة الذهبية — 25 الف</div></div>
+        <div class="row"><div class="label">الضمان</div><div class="value">12 شهراً — <span style="color:#ff6b6b;">منتهي</span></div></div>
+        <div class="row"><div class="label">انتهاء الاشتراك</div><div class="value" style="color:#fff;">28 مارس 2026</div></div>
+        <div class="row"><div class="label">UDID</div><div class="value" dir="ltr" style="font-family:monospace;font-size:12px;color:#a8b2d1;">00008140-000269EE36FB001C</div></div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="delete-btn" onclick="deleteCard(this)">🗑 حذف</button>
+      <button class="print-btn" onclick="openInvoice(this.closest('.card'))">🧾 طباعة الفاتورة</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADD MODAL ══ -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal-box">
+    <div class="modal-title">➕ إضافة عميل جديد</div>
+
+    <div class="fsep">معلومات العميل</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label><span class="req">*</span> اسم العميل</label>
+        <input class="form-control" id="f-name" type="text" placeholder="مثال: أحمد محمد">
+      </div>
+      <div class="form-group" style="max-width:110px;">
+        <label>التسلسل #</label>
+        <input class="form-control" id="f-seq" type="number" placeholder="تلقائي">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>حسابه / رقمه</label>
+      <input class="form-control" id="f-user" type="text" placeholder="@username أو رقم">
+    </div>
+
+    <div class="fsep">معرف تيليغرام (ID)</div>
+    <div class="form-group">
+      <label>الـ ID الرقمي</label>
+      <input class="form-control" id="f-tgid" type="text" dir="ltr" placeholder="مثال: 6364643418" oninput="updateTgLinks()">
+    </div>
+    <div class="tg-box">
+      tg://user?id=<span class="tg-val" id="tl1">———</span><br>
+      tg://openmessage?user_id=<span class="tg-val" id="tl2">———</span>
+    </div>
+
+    <div class="fsep">تفاصيل الاشتراك</div>
+    <div class="form-group">
+      <label><span class="req">*</span> نوع الاشتراك</label>
+      <select class="form-control" id="f-type" onchange="updatePackages()">
+        <option value="">— اختر النوع —</option>
+        <option value="شهادة iOS">شهادة iOS</option>
+        <option value="متجر بلس">متجر بلس</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label><span class="req">*</span> باقة الاشتراك</label>
+      <select class="form-control" id="f-package" onchange="updateWarranty()">
+        <option value="">— اختر الباقة —</option>
+      </select>
+    </div>
+    <div class="info-box" id="w-info" style="display:none;"></div>
+
+    <div class="fsep">UDID</div>
+    <div class="form-group">
+      <label>رقم UDID</label>
+      <input class="form-control" id="f-udid" type="text" dir="ltr" placeholder="00008140-XXXXXXXXXXXXXXXX">
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-secondary" onclick="closeAddModal()">إلغاء</button>
+      <button class="btn-primary" onclick="addClient()">✅ إضافة العميل</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INVOICE MODAL ══ -->
+<div class="modal-overlay" id="invoice-modal">
+  <div id="invoice-paper">
+    <div class="watermark">
+      <img src="https://i.ibb.co/FqnVfd3r/1773979935784.png" crossorigin="anonymous">
+    </div>
+    <div class="inv-content" id="inv-inner"></div>
+  </div>
+  <div class="inv-btns">
+    <button class="btn-save" onclick="saveAsJpg()">💾 حفظ كصورة JPG</button>
+    <button class="btn-close" onclick="closeInvoice()">✕ إغلاق</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const PKGS = {
+  'شهادة iOS':[
+    {label:'الباقة الأساسية — 15 الف', wm:3,  wl:'3 أشهر',   gold:false},
+    {label:'الباقة الذهبية — 25 الف',  wm:12, wl:'12 شهراً', gold:true }
+  ],
+  'متجر بلس':[
+    {label:'الباقة الأساسية — 18 الف', wm:1, wl:'شهر واحد', gold:false},
+    {label:'الباقة الذهبية — 22 الف',  wm:3, wl:'3 أشهر',  gold:true }
+  ]
+};
+
+function updateTgLinks(){
+  const v=document.getElementById('f-tgid').value.trim()||'———';
+  document.getElementById('tl1').textContent=v;
+  document.getElementById('tl2').textContent=v;
+}
+function updatePackages(){
+  const t=document.getElementById('f-type').value;
+  const s=document.getElementById('f-package');
+  s.innerHTML='<option value="">— اختر الباقة —</option>';
+  document.getElementById('w-info').style.display='none';
+  if(t&&PKGS[t]) PKGS[t].forEach((p,i)=>{s.innerHTML+=`<option value="${i}">${p.label}</option>`;});
+}
+function updateWarranty(){
+  const t=document.getElementById('f-type').value;
+  const i=document.getElementById('f-package').value;
+  const b=document.getElementById('w-info');
+  if(!t||i===''){b.style.display='none';return;}
+  const p=PKGS[t][i];
+  b.style.display='block';
+  b.textContent=`📌 الضمان: ${p.wl} — يبدأ من تاريخ إصدار الفاتورة.`;
+}
+
+let autoSeq=82;
+function openAddModal(){
+  document.getElementById('add-modal').classList.add('active');
+}
+function closeAddModal(){
+  document.getElementById('add-modal').classList.remove('active');
+  ['f-name','f-seq','f-user','f-tgid','f-udid'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('f-type').value='';
+  document.getElementById('f-package').innerHTML='<option value="">— اختر الباقة —</option>';
+  document.getElementById('w-info').style.display='none';
+  document.getElementById('tl1').textContent='———';
+  document.getElementById('tl2').textContent='———';
+}
+
+function addClient(){
+  const name=document.getElementById('f-name').value.trim();
+  const seqR=document.getElementById('f-seq').value.trim();
+  const user=document.getElementById('f-user').value.trim();
+  const tgid=document.getElementById('f-tgid').value.trim();
+  const type=document.getElementById('f-type').value;
+  const pi  =document.getElementById('f-package').value;
+  const udid=document.getElementById('f-udid').value.trim();
+  if(!name){alert('يرجى إدخال اسم العميل.');return;}
+  if(!type){alert('يرجى اختيار نوع الاشتراك.');return;}
+  if(pi===''){alert('يرجى اختيار الباقة.');return;}
+  const seq=seqR||autoSeq++;
+  const p=PKGS[type][pi];
+  const today=new Date();
+  const endD=new Date(today); endD.setFullYear(endD.getFullYear()+1);
+  const wEnd=new Date(today); wEnd.setMonth(wEnd.getMonth()+p.wm);
+  const now=new Date();
+  const wa=now<=wEnd;
+  const fAr=d=>d.toLocaleDateString('ar-IQ',{year:'numeric',month:'long',day:'numeric'});
+  const c=document.createElement('div');
+  c.className='card';
+  c.setAttribute('data-name',name);c.setAttribute('data-seq',seq);
+  c.setAttribute('data-user',user);c.setAttribute
