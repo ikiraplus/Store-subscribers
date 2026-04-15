@@ -8,8 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
-/* إجبار تحميل الخط مسبقاً */
 *{box-sizing:border-box;}
 body{margin:0;padding:0 0 60px;font-family:'Tajawal',sans-serif;background:linear-gradient(-45deg,#0b0c10,#1f2833,#0f1b29,#05080f);background-size:400% 400%;animation:bg 15s ease infinite;color:#fff;min-height:100vh;}
 @keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
@@ -72,11 +70,15 @@ select.form-control option{background:#1f2833;color:#fff;}
 /* ══ INVOICE PAPER ══ */
 #invoice-modal{z-index:9999;}
 #invoice-paper{
-  position:relative;width:100%;max-width:570px;
-  background:#fff;border-radius:20px 20px 0 0;
+  position:relative;
+  width:570px;
+  background:#fff;
+  border-radius:20px 20px 0 0;
   padding:28px 34px 24px;
-  font-family:'Tajawal',sans-serif;direction:rtl;
-  overflow:hidden;box-shadow:0 25px 70px rgba(0,0,0,0.6);
+  font-family:'Tajawal',sans-serif;
+  direction:rtl;
+  overflow:hidden;
+  box-shadow:0 25px 70px rgba(0,0,0,0.6);
 }
 .watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;}
 .watermark img{width:240px;opacity:0.07;transform:none;}
@@ -108,7 +110,7 @@ select.form-control option{background:#1f2833;color:#fff;}
 .inv-section-sep::before{background:linear-gradient(90deg,transparent,#d8f5f2);}
 .inv-section-sep::after{background:linear-gradient(90deg,#d8f5f2,transparent);}
 
-/* صفوف مع zebra */
+/* صفوف */
 .inv-rows-block{border-radius:10px;overflow:hidden;border:1px solid #edf7f6;}
 .inv-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #f0f9f8;}
 .inv-row:last-child{border-bottom:none;}
@@ -118,7 +120,7 @@ select.form-control option{background:#1f2833;color:#fff;}
 .inv-lbl .d{width:5px;height:5px;min-width:5px;background:#45a29e;border-radius:50%;display:inline-block;vertical-align:middle;}
 .inv-val{font-size:13px;font-weight:700;color:#1a1a2e;}
 .inv-val.gold{color:#8a6800;}
-.inv-val.mono{font-family:monospace;font-size:10px;color:#555;direction:ltr;word-break:break-all;max-width:240px;text-align:right;}
+.inv-val.mono{font-family:monospace;font-size:11px;color:#555;direction:ltr;word-break:break-all;max-width:300px;text-align:left;}
 
 /* ضمان */
 .wblock{background:#f7fffe;border:1px solid #cceee9;border-radius:10px;padding:9px 13px;margin:10px 0;}
@@ -129,27 +131,17 @@ select.form-control option{background:#1f2833;color:#fff;}
 .wb.ok{background:#e6faf3;color:#1a7a4a;}
 .wb.exp{background:#fff0f0;color:#cc1111;}
 
-/* QR + تذييل مدمج */
+/* QR + تذييل */
 .inv-footer{margin-top:8px;padding-top:8px;border-top:2px solid #d8f5f2;display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .inv-footer-left{display:flex;align-items:center;gap:8px;flex:1;}
 .inv-footer-txt{font-size:9px;color:#aaa;font-weight:600;line-height:1.5;}
-
-/* كلمة موثّق */
 .inv-stamp{font-size:10px;color:#45a29e;font-weight:800;border:1.5px solid #45a29e;padding:3px 10px;border-radius:7px;white-space:nowrap;flex-shrink:0;}
-
-/* إطار الباركود — مربع أخضر صغير بدون عنوان */
-.inv-qr-frame{
-  display:inline-flex;align-items:center;justify-content:center;
-  background:#f0fffe;
-  border:2px solid #45a29e;border-radius:8px;
-  padding:4px;
-  flex-shrink:0;
-}
+.inv-qr-frame{display:inline-flex;align-items:center;justify-content:center;background:#f0fffe;border:2px solid #45a29e;border-radius:8px;padding:4px;flex-shrink:0;}
 #qr-holder{line-height:0;}
 #qr-holder img,#qr-holder canvas{width:44px!important;height:44px!important;border-radius:2px;display:block;}
 
 /* أزرار */
-.inv-btns{display:flex;justify-content:center;gap:12px;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 20px 20px;width:100%;max-width:570px;}
+.inv-btns{display:flex;justify-content:center;gap:12px;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 20px 20px;width:570px;}
 .inv-btns button{font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;border:none;border-radius:25px;padding:12px 28px;cursor:pointer;transition:all 0.3s;}
 .btn-save{background:linear-gradient(135deg,#66fcf1,#45a29e);color:#0b0c10;box-shadow:0 4px 15px rgba(102,252,241,0.3);}
 .btn-save:hover{transform:translateY(-2px);}
@@ -170,7 +162,6 @@ select.form-control option{background:#1f2833;color:#fff;}
 </div>
 
 <div id="cards-container">
-  <!-- كرت مثال -->
   <div class="card"
     data-name="نيرمين علي" data-seq="81" data-user="@neero20"
     data-type="شهادة iOS" data-pkg="الباقة الذهبية — 25 الف"
@@ -201,7 +192,6 @@ select.form-control option{background:#1f2833;color:#fff;}
 <div class="modal-overlay" id="add-modal">
   <div class="modal-box">
     <div class="modal-title">➕ إضافة عميل جديد</div>
-
     <div class="fsep">معلومات العميل</div>
     <div class="form-row">
       <div class="form-group">
@@ -217,7 +207,6 @@ select.form-control option{background:#1f2833;color:#fff;}
       <label>حسابه / رقمه</label>
       <input class="form-control" id="f-user" type="text" placeholder="@username أو رقم">
     </div>
-
     <div class="fsep">معرف تيليغرام (ID)</div>
     <div class="form-group">
       <label>الـ ID الرقمي</label>
@@ -227,7 +216,6 @@ select.form-control option{background:#1f2833;color:#fff;}
       tg://user?id=<span class="tg-val" id="tl1">———</span><br>
       tg://openmessage?user_id=<span class="tg-val" id="tl2">———</span>
     </div>
-
     <div class="fsep">تفاصيل الاشتراك</div>
     <div class="form-group">
       <label><span class="req">*</span> نوع الاشتراك</label>
@@ -244,13 +232,11 @@ select.form-control option{background:#1f2833;color:#fff;}
       </select>
     </div>
     <div class="info-box" id="w-info" style="display:none;"></div>
-
     <div class="fsep">UDID</div>
     <div class="form-group">
       <label>رقم UDID</label>
       <input class="form-control" id="f-udid" type="text" dir="ltr" placeholder="00008140-XXXXXXXXXXXXXXXX">
     </div>
-
     <div class="form-actions">
       <button class="btn-secondary" onclick="closeAddModal()">إلغاء</button>
       <button class="btn-primary" onclick="addClient()">✅ إضافة العميل</button>
@@ -272,7 +258,8 @@ select.form-control option{background:#1f2833;color:#fff;}
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- المكتبات -->
+<script src="https://cdn.jsdelivr.net/npm/dom-to-image-more@3.4.0/src/dom-to-image-more.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 const PKGS = {
@@ -309,9 +296,7 @@ function updateWarranty(){
 }
 
 let autoSeq=82;
-function openAddModal(){
-  document.getElementById('add-modal').classList.add('active');
-}
+function openAddModal(){document.getElementById('add-modal').classList.add('active');}
 function closeAddModal(){
   document.getElementById('add-modal').classList.remove('active');
   ['f-name','f-seq','f-user','f-tgid','f-udid'].forEach(id=>{document.getElementById(id).value='';});
@@ -393,13 +378,11 @@ function openInvoice(card){
   const wl  =wm===1?'شهر واحد':wm===3?'3 أشهر':wm===12?'12 شهراً':wm+' شهر';
   const MONTHS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
   const fAr=d=>`${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-  const issueTime = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  const issueTime=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   const gold=pkg.includes('الذهبية');
-
   const tg1=tgid?`tg://user?id=${tgid}`:'';
   const tg2=tgid?`tg://openmessage?user_id=${tgid}`:'';
-
-  const invNo = 'KP-' + now.getFullYear() + '-' + String(Math.floor(Math.random()*9000)+1000);
+  const invNo='KP-'+now.getFullYear()+'-'+String(Math.floor(Math.random()*9000)+1000);
 
   document.getElementById('inv-inner').innerHTML=`
     <div class="inv-header">
@@ -429,7 +412,7 @@ function openInvoice(card){
     <div class="inv-rows-block">
       <div class="inv-row">
         <div class="inv-lbl"><span class="d"></span>حسابه / رقمه</div>
-        <div class="inv-val" dir="ltr">${user||'—'}</div>
+        <div class="inv-val" style="direction:ltr;text-align:left;">${user||'—'}</div>
       </div>
       <div class="inv-row">
         <div class="inv-lbl"><span class="d"></span>الباقة</div>
@@ -489,80 +472,66 @@ function closeInvoice(){
   document.getElementById('inv-inner').innerHTML='';
 }
 
-// جلب الخط كـ base64 عند تحميل الصفحة
-let fontBase64Cache = null;
-async function getFontBase64() {
-  if (fontBase64Cache) return fontBase64Cache;
-  try {
-    // اجمع كل الخطوط المحملة من document.fonts
-    const fontFaces = [...document.fonts];
-    const loaded = fontFaces.filter(f => f.family.includes('Tajawal') && f.status === 'loaded');
-    if (loaded.length === 0) {
-      await document.fonts.load('700 16px Tajawal');
-    }
-    // جلب ملف الخط مباشرة
-    const urls = [
-      'https://fonts.gstatic.com/s/tajawal/v11/Iura6YBj_oCad4k1nzSrC45I.woff2',
-      'https://fonts.gstatic.com/s/tajawal/v11/Iura6YBj_oCad4k1nzS2C45I.woff2',
-    ];
-    let css = '';
-    for (const url of urls) {
-      try {
-        const resp = await fetch(url);
-        const buf  = await resp.arrayBuffer();
-        const b64  = btoa(String.fromCharCode(...new Uint8Array(buf)));
-        const w    = url.includes('nzSr') ? 700 : 800;
-        css += `@font-face{font-family:'Tajawal';font-weight:${w};src:url('data:font/woff2;base64,${b64}') format('woff2');}`;
-      } catch(e) { /* تجاهل */ }
-    }
-    fontBase64Cache = css;
-    return css;
-  } catch(e) { return ''; }
-}
-
+/* ══ حفظ الفاتورة كـ JPG ══
+   نستخدم dom-to-image-more بدلاً من html2canvas
+   لأنها تدعم RTL والخطوط الخارجية بشكل صحيح */
 async function saveAsJpg(){
-  const paper=document.getElementById('invoice-paper');
-  const btn=document.querySelector('.btn-save');
-  btn.textContent='⏳ جاري الحفظ...';btn.disabled=true;
-  try{
-    await document.fonts.ready;
-    const fontCSS = await getFontBase64();
-    await new Promise(r=>setTimeout(r,200));
+  const paper = document.getElementById('invoice-paper');
+  const btn   = document.querySelector('.btn-save');
+  btn.textContent = '⏳ جاري الحفظ...';
+  btn.disabled = true;
 
-    const c=await html2canvas(paper,{
-      scale:3,
-      useCORS:true,
-      allowTaint:true,
-      backgroundColor:'#ffffff',
-      logging:false,
-      onclone:(cloneDoc)=>{
-        // حقن الخط كـ base64 في المستند المستنسخ
-        const style = cloneDoc.createElement('style');
-        style.textContent = fontCSS + `
-          * { font-family: 'Tajawal', Arial, sans-serif !important; }
-          [dir="ltr"], .mono, .inv-val.mono { font-family: monospace !important; }
-        `;
-        cloneDoc.head.appendChild(style);
-        // انتظر تطبيق الأنماط
-        return new Promise(r => setTimeout(r, 300));
+  try {
+    // انتظر تحميل الخطوط والصور
+    await document.fonts.ready;
+    await waitForImages(paper);
+    await new Promise(r => setTimeout(r, 300));
+
+    const scale  = 3;
+    const W      = paper.offsetWidth;
+    const H      = paper.offsetHeight;
+
+    const dataUrl = await domtoimage.toJpeg(paper, {
+      quality : 0.97,
+      bgcolor : '#ffffff',
+      width   : W * scale,
+      height  : H * scale,
+      style   : {
+        transform       : `scale(${scale})`,
+        transformOrigin : 'top right',
+        width           : W + 'px',
+        height          : H + 'px',
       }
     });
-    const l=document.createElement('a');
-    l.download='فاتورة_اشتراك.jpg';
-    l.href=c.toDataURL('image/jpeg',0.95);
-    l.click();
-  }catch(e){
+
+    const a      = document.createElement('a');
+    a.download   = 'فاتورة_اشتراك.jpg';
+    a.href       = dataUrl;
+    a.click();
+
+  } catch(e) {
     console.error(e);
-    alert('حدث خطأ: '+e.message);
+    alert('حدث خطأ أثناء الحفظ:\n' + e.message);
   }
-  btn.textContent='💾 حفظ كصورة JPG';btn.disabled=false;
+
+  btn.textContent = '💾 حفظ كصورة JPG';
+  btn.disabled = false;
+}
+
+/* مساعدة: انتظر تحميل كل الصور داخل العنصر */
+function waitForImages(el){
+  const imgs = [...el.querySelectorAll('img')];
+  return Promise.all(imgs.map(img => {
+    if(img.complete) return Promise.resolve();
+    return new Promise(res => {
+      img.onload  = res;
+      img.onerror = res;
+    });
+  }));
 }
 
 document.getElementById('invoice-modal').addEventListener('click',e=>{if(e.target===document.getElementById('invoice-modal'))closeInvoice();});
 document.getElementById('add-modal').addEventListener('click',e=>{if(e.target===document.getElementById('add-modal'))closeAddModal();});
-
-// تحميل الخط مسبقاً عند فتح الصفحة
-document.fonts.load('800 16px Tajawal').then(()=>document.fonts.load('700 14px Tajawal'));
 </script>
 </body>
 </html>
