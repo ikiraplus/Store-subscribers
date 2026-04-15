@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مشتركين المتجر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+/* إجبار تحميل الخط مسبقاً */
 *{box-sizing:border-box;}
 body{margin:0;padding:0 0 60px;font-family:'Tajawal',sans-serif;background:linear-gradient(-45deg,#0b0c10,#1f2833,#0f1b29,#05080f);background-size:400% 400%;animation:bg 15s ease infinite;color:#fff;min-height:100vh;}
 @keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
@@ -79,11 +83,16 @@ select.form-control option{background:#1f2833;color:#fff;}
 .inv-content{position:relative;z-index:1;}
 
 /* رأس */
-.inv-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid #ebebeb;}
+.inv-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:12px;border-bottom:2.5px solid #d8f5f2;}
 .inv-logo{width:54px;height:54px;border-radius:12px;object-fit:cover;border:2.5px solid #45a29e;box-shadow:0 3px 14px rgba(69,162,158,0.25);}
-.inv-title{font-size:19px;font-weight:800;color:#1a1a2e;margin:0 0 3px;}
-.inv-activation{font-size:11px;color:#45a29e;font-weight:700;margin:0 0 2px;}
-.inv-issue{font-size:10px;color:#999;font-weight:700;margin:0;}
+.inv-head-left{display:flex;flex-direction:column;gap:3px;}
+.inv-shop-name{font-size:13px;font-weight:800;color:#45a29e;letter-spacing:0.5px;margin:0;}
+.inv-title{font-size:19px;font-weight:800;color:#1a1a2e;margin:0;}
+.inv-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;}
+.inv-inv-no{font-size:10px;font-weight:800;color:#fff;background:linear-gradient(135deg,#45a29e,#2e7d7a);padding:2px 8px;border-radius:6px;display:inline-block;letter-spacing:0.5px;white-space:nowrap;}
+.inv-meta-sep{font-size:10px;color:#ccc;}
+.inv-activation{font-size:10px;color:#45a29e;font-weight:700;white-space:nowrap;}
+.inv-issue{font-size:10px;color:#999;font-weight:700;white-space:nowrap;}
 
 /* بانر اسم */
 .inv-name-row{background:linear-gradient(135deg,#f0fffe,#e3f8f7);border-right:4px solid #45a29e;border-radius:10px;padding:10px 14px;margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;}
@@ -92,11 +101,21 @@ select.form-control option{background:#1f2833;color:#fff;}
 .inv-seq-b{font-size:11px;color:#fff;background:#45a29e;padding:2px 11px;border-radius:18px;font-weight:700;}
 .inv-type-b{font-size:10px;color:#45a29e;border:1px solid #45a29e;padding:2px 8px;border-radius:10px;font-weight:600;}
 
-/* صفوف */
-.inv-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #eee;}
-.inv-row:last-of-type{border-bottom:none;}
-.inv-lbl{font-size:12px;color:#999;font-weight:700;display:inline-flex;align-items:center;gap:6px;line-height:1;}
-.inv-lbl .d{width:5px;height:5px;min-width:5px;background:#45a29e;border-radius:50%;display:inline-block;vertical-align:middle;position:relative;top:0;}
+/* فاصل قسم */
+.inv-section-sep{display:flex;align-items:center;gap:8px;margin:11px 0 6px;}
+.inv-section-sep span{font-size:10px;font-weight:800;color:#45a29e;letter-spacing:0.8px;white-space:nowrap;}
+.inv-section-sep::before,.inv-section-sep::after{content:'';flex:1;height:1.5px;background:linear-gradient(90deg,#d8f5f2,transparent);}
+.inv-section-sep::before{background:linear-gradient(90deg,transparent,#d8f5f2);}
+.inv-section-sep::after{background:linear-gradient(90deg,#d8f5f2,transparent);}
+
+/* صفوف مع zebra */
+.inv-rows-block{border-radius:10px;overflow:hidden;border:1px solid #edf7f6;}
+.inv-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #f0f9f8;}
+.inv-row:last-child{border-bottom:none;}
+.inv-row:nth-child(even){background:#f7fdfc;}
+.inv-row:nth-child(odd){background:#ffffff;}
+.inv-lbl{font-size:12px;color:#888;font-weight:700;display:inline-flex;align-items:center;gap:6px;line-height:1;}
+.inv-lbl .d{width:5px;height:5px;min-width:5px;background:#45a29e;border-radius:50%;display:inline-block;vertical-align:middle;}
 .inv-val{font-size:13px;font-weight:700;color:#1a1a2e;}
 .inv-val.gold{color:#8a6800;}
 .inv-val.mono{font-family:monospace;font-size:10px;color:#555;direction:ltr;word-break:break-all;max-width:240px;text-align:right;}
@@ -111,28 +130,23 @@ select.form-control option{background:#1f2833;color:#fff;}
 .wb.exp{background:#fff0f0;color:#cc1111;}
 
 /* QR + تذييل مدمج */
-.inv-footer{margin-top:12px;padding-top:10px;border-top:2px solid #ebebeb;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.inv-footer-left{display:flex;flex-direction:column;align-items:flex-start;gap:6px;}
-.inv-footer-txt{font-size:10px;color:#aaa;font-weight:600;}
-.inv-stamp{font-size:10.5px;color:#45a29e;font-weight:800;border:1.5px solid #45a29e;padding:3px 12px;border-radius:7px;}
+.inv-footer{margin-top:8px;padding-top:8px;border-top:2px solid #d8f5f2;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.inv-footer-left{display:flex;align-items:center;gap:8px;flex:1;}
+.inv-footer-txt{font-size:9px;color:#aaa;font-weight:600;line-height:1.5;}
 
-/* إطار الباركود */
+/* كلمة موثّق */
+.inv-stamp{font-size:10px;color:#45a29e;font-weight:800;border:1.5px solid #45a29e;padding:3px 10px;border-radius:7px;white-space:nowrap;flex-shrink:0;}
+
+/* إطار الباركود — مربع أخضر صغير بدون عنوان */
 .inv-qr-frame{
-  display:inline-flex;flex-direction:column;align-items:center;gap:5px;
-  background:linear-gradient(135deg,#f0fffe,#e3f8f7);
-  border:2px solid #45a29e;border-radius:12px;
-  padding:10px 12px 7px;
-  box-shadow:0 3px 10px rgba(69,162,158,0.2);
-  position:relative;flex-shrink:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:#f0fffe;
+  border:2px solid #45a29e;border-radius:8px;
+  padding:4px;
+  flex-shrink:0;
 }
-.inv-qr-frame::before{
-  content:'QR';position:absolute;top:-8px;right:10px;
-  background:#45a29e;color:#fff;font-size:8.5px;font-weight:800;
-  padding:1px 7px;border-radius:5px;letter-spacing:1px;
-}
-.inv-qr-label{font-size:9px;color:#45a29e;font-weight:700;letter-spacing:0.4px;}
 #qr-holder{line-height:0;}
-#qr-holder img,#qr-holder canvas{width:80px!important;height:80px!important;border-radius:3px;}
+#qr-holder img,#qr-holder canvas{width:44px!important;height:44px!important;border-radius:2px;display:block;}
 
 /* أزرار */
 .inv-btns{display:flex;justify-content:center;gap:12px;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 20px 20px;width:100%;max-width:570px;}
@@ -330,4 +344,225 @@ function addClient(){
   const c=document.createElement('div');
   c.className='card';
   c.setAttribute('data-name',name);c.setAttribute('data-seq',seq);
-  c.setAttribute('data-user',user);c.setAttribute
+  c.setAttribute('data-user',user);c.setAttribute('data-tgid',tgid);
+  c.setAttribute('data-type',type);c.setAttribute('data-pkg',p.label);
+  c.setAttribute('data-wm',p.wm);c.setAttribute('data-start',today.toISOString().split('T')[0]);
+  c.setAttribute('data-udid',udid);
+  c.innerHTML=`
+    <div class="card-body">
+      <div class="right"><div class="cname">${name}</div><div class="cseq">تسلسل #${seq}</div></div>
+      <div class="left">
+        ${user?`<div class="row"><div class="label">حسابه / رقمه</div><div class="value" dir="ltr">${user}</div></div>`:''}
+        <div class="row"><div class="label">نوع الاشتراك</div><div class="value">${type}</div></div>
+        <div class="row"><div class="label">الباقة</div><div class="value" style="color:${p.gold?'#ffd700':'#66fcf1'};">${p.label}</div></div>
+        <div class="row"><div class="label">الضمان</div><div class="value">${p.wl} — <span style="color:${wa?'#4ade80':'#ff6b6b'};">${wa?'فعّال':'منتهي'}</span></div></div>
+        <div class="row"><div class="label">انتهاء الاشتراك</div><div class="value" style="color:#fff;">${fAr(endD)}</div></div>
+        ${udid?`<div class="row"><div class="label">UDID</div><div class="value" dir="ltr" style="font-family:monospace;font-size:12px;color:#a8b2d1;">${udid}</div></div>`:''}
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="delete-btn" onclick="deleteCard(this)">🗑 حذف</button>
+      <button class="print-btn" onclick="openInvoice(this.closest('.card'))">🧾 طباعة الفاتورة</button>
+    </div>`;
+  document.getElementById('cards-container').prepend(c);
+  closeAddModal();
+}
+
+function deleteCard(btn){if(confirm('هل تريد حذف هذا العميل؟'))btn.closest('.card').remove();}
+function searchCards(){
+  const q=document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(c=>{c.style.display=(c.getAttribute('data-name')||'').toLowerCase().includes(q)?'':'none';});
+}
+
+function openInvoice(card){
+  const name =card.getAttribute('data-name')||'';
+  const seq  =card.getAttribute('data-seq')||'';
+  const user =card.getAttribute('data-user')||'';
+  const tgid =card.getAttribute('data-tgid')||'';
+  const type =card.getAttribute('data-type')||'';
+  const pkg  =card.getAttribute('data-pkg')||'';
+  const wm   =parseInt(card.getAttribute('data-wm'))||0;
+  const start=card.getAttribute('data-start')||new Date().toISOString().split('T')[0];
+  const udid =card.getAttribute('data-udid')||'';
+
+  const sd  =new Date(start);
+  const ed  =new Date(sd); ed.setFullYear(ed.getFullYear()+1);
+  const we  =new Date(sd); we.setMonth(we.getMonth()+wm);
+  const now =new Date();
+  const wa  =now<=we;
+  const wl  =wm===1?'شهر واحد':wm===3?'3 أشهر':wm===12?'12 شهراً':wm+' شهر';
+  const MONTHS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const fAr=d=>`${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  const issueTime = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  const gold=pkg.includes('الذهبية');
+
+  const tg1=tgid?`tg://user?id=${tgid}`:'';
+  const tg2=tgid?`tg://openmessage?user_id=${tgid}`:'';
+
+  const invNo = 'KP-' + now.getFullYear() + '-' + String(Math.floor(Math.random()*9000)+1000);
+
+  document.getElementById('inv-inner').innerHTML=`
+    <div class="inv-header">
+      <div class="inv-head-left">
+        <div class="inv-shop-name">✦ كيرا بلس</div>
+        <div class="inv-title">فاتورة الاشتراك</div>
+        <div class="inv-meta-row">
+          <span class="inv-inv-no">${invNo}</span>
+          <span class="inv-meta-sep">|</span>
+          <span class="inv-activation">📅 ${fAr(sd)}</span>
+          <span class="inv-meta-sep">·</span>
+          <span class="inv-issue">وقت الإصدار: ${issueTime}</span>
+        </div>
+      </div>
+      <img class="inv-logo" src="https://i.ibb.co/FqnVfd3r/1773979935784.png" crossorigin="anonymous">
+    </div>
+
+    <div class="inv-name-row">
+      <div class="inv-sname">${name}</div>
+      <div class="inv-badges">
+        <div class="inv-seq-b">تسلسل #${seq}</div>
+        ${type?`<div class="inv-type-b">${type}</div>`:''}
+      </div>
+    </div>
+
+    <div class="inv-section-sep"><span>بيانات الاشتراك</span></div>
+    <div class="inv-rows-block">
+      <div class="inv-row">
+        <div class="inv-lbl"><span class="d"></span>حسابه / رقمه</div>
+        <div class="inv-val" dir="ltr">${user||'—'}</div>
+      </div>
+      <div class="inv-row">
+        <div class="inv-lbl"><span class="d"></span>الباقة</div>
+        <div class="inv-val ${gold?'gold':''}">${pkg||'—'}</div>
+      </div>
+      <div class="inv-row">
+        <div class="inv-lbl"><span class="d"></span>انتهاء الاشتراك</div>
+        <div class="inv-val">${fAr(ed)}</div>
+      </div>
+      <div class="inv-row">
+        <div class="inv-lbl"><span class="d"></span>UDID</div>
+        <div class="inv-val mono">${udid||'—'}</div>
+      </div>
+    </div>
+
+    <div class="inv-section-sep"><span>الضمان</span></div>
+    <div class="wblock">
+      <div class="wrow">
+        <div class="wlbl">مدة الضمان</div>
+        <div class="wval">${wl} <span class="wb ${wa?'ok':'exp'}">${wa?'✔ فعّالة':'✘ منتهية'}</span></div>
+      </div>
+      <div class="wrow">
+        <div class="wlbl">تاريخ انتهاء الضمان</div>
+        <div class="wval">${fAr(we)}</div>
+      </div>
+    </div>
+
+    ${tgid?`
+    <div class="inv-footer">
+      <div class="inv-footer-left">
+        <div class="inv-stamp">✓ موثّق</div>
+        <div class="inv-footer-txt">هذه الوثيقة<br>صادرة تلقائياً من النظام</div>
+      </div>
+      <div class="inv-qr-frame">
+        <div id="qr-holder"></div>
+      </div>
+    </div>`:`
+    <div class="inv-footer">
+      <div class="inv-footer-left">
+        <div class="inv-stamp">✓ موثّق</div>
+        <div class="inv-footer-txt">هذه الوثيقة<br>صادرة تلقائياً من النظام</div>
+      </div>
+    </div>`}
+  `;
+
+  if(tgid){
+    setTimeout(()=>{
+      const h=document.getElementById('qr-holder');
+      if(h) new QRCode(h,{text:`${tg1}\n${tg2}`,width:46,height:46,colorDark:'#1a1a2e',colorLight:'#f0fffe',correctLevel:QRCode.CorrectLevel.M});
+    },50);
+  }
+  document.getElementById('invoice-modal').classList.add('active');
+}
+
+function closeInvoice(){
+  document.getElementById('invoice-modal').classList.remove('active');
+  document.getElementById('inv-inner').innerHTML='';
+}
+
+// جلب الخط كـ base64 عند تحميل الصفحة
+let fontBase64Cache = null;
+async function getFontBase64() {
+  if (fontBase64Cache) return fontBase64Cache;
+  try {
+    // اجمع كل الخطوط المحملة من document.fonts
+    const fontFaces = [...document.fonts];
+    const loaded = fontFaces.filter(f => f.family.includes('Tajawal') && f.status === 'loaded');
+    if (loaded.length === 0) {
+      await document.fonts.load('700 16px Tajawal');
+    }
+    // جلب ملف الخط مباشرة
+    const urls = [
+      'https://fonts.gstatic.com/s/tajawal/v11/Iura6YBj_oCad4k1nzSrC45I.woff2',
+      'https://fonts.gstatic.com/s/tajawal/v11/Iura6YBj_oCad4k1nzS2C45I.woff2',
+    ];
+    let css = '';
+    for (const url of urls) {
+      try {
+        const resp = await fetch(url);
+        const buf  = await resp.arrayBuffer();
+        const b64  = btoa(String.fromCharCode(...new Uint8Array(buf)));
+        const w    = url.includes('nzSr') ? 700 : 800;
+        css += `@font-face{font-family:'Tajawal';font-weight:${w};src:url('data:font/woff2;base64,${b64}') format('woff2');}`;
+      } catch(e) { /* تجاهل */ }
+    }
+    fontBase64Cache = css;
+    return css;
+  } catch(e) { return ''; }
+}
+
+async function saveAsJpg(){
+  const paper=document.getElementById('invoice-paper');
+  const btn=document.querySelector('.btn-save');
+  btn.textContent='⏳ جاري الحفظ...';btn.disabled=true;
+  try{
+    await document.fonts.ready;
+    const fontCSS = await getFontBase64();
+    await new Promise(r=>setTimeout(r,200));
+
+    const c=await html2canvas(paper,{
+      scale:3,
+      useCORS:true,
+      allowTaint:true,
+      backgroundColor:'#ffffff',
+      logging:false,
+      onclone:(cloneDoc)=>{
+        // حقن الخط كـ base64 في المستند المستنسخ
+        const style = cloneDoc.createElement('style');
+        style.textContent = fontCSS + `
+          * { font-family: 'Tajawal', Arial, sans-serif !important; }
+          [dir="ltr"], .mono, .inv-val.mono { font-family: monospace !important; }
+        `;
+        cloneDoc.head.appendChild(style);
+        // انتظر تطبيق الأنماط
+        return new Promise(r => setTimeout(r, 300));
+      }
+    });
+    const l=document.createElement('a');
+    l.download='فاتورة_اشتراك.jpg';
+    l.href=c.toDataURL('image/jpeg',0.95);
+    l.click();
+  }catch(e){
+    console.error(e);
+    alert('حدث خطأ: '+e.message);
+  }
+  btn.textContent='💾 حفظ كصورة JPG';btn.disabled=false;
+}
+
+document.getElementById('invoice-modal').addEventListener('click',e=>{if(e.target===document.getElementById('invoice-modal'))closeInvoice();});
+document.getElementById('add-modal').addEventListener('click',e=>{if(e.target===document.getElementById('add-modal'))closeAddModal();});
+
+// تحميل الخط مسبقاً عند فتح الصفحة
+document.fonts.load('800 16px Tajawal').then(()=>document.fonts.load('700 14px Tajawal'));
+</script>
+</body>
+</html>
