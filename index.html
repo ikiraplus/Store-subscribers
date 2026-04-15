@@ -137,7 +137,7 @@ select.form-control option{background:#1f2833;color:#fff;}
 /* كلمة موثّق */
 .inv-stamp{font-size:10px;color:#45a29e;font-weight:800;border:1.5px solid #45a29e;padding:3px 10px;border-radius:7px;white-space:nowrap;flex-shrink:0;}
 
-/* إطار الباركود — مربع أخضر صغير بدون عنوان */
+/* إطار الباركود */
 .inv-qr-frame{
   display:inline-flex;align-items:center;justify-content:center;
   background:#f0fffe;
@@ -489,18 +489,11 @@ function closeInvoice(){
   document.getElementById('inv-inner').innerHTML='';
 }
 
-// جلب الخط كـ base64 عند تحميل الصفحة
+/* ══ جلب الخط كـ base64 ══ */
 let fontBase64Cache = null;
 async function getFontBase64() {
   if (fontBase64Cache) return fontBase64Cache;
   try {
-    // اجمع كل الخطوط المحملة من document.fonts
-    const fontFaces = [...document.fonts];
-    const loaded = fontFaces.filter(f => f.family.includes('Tajawal') && f.status === 'loaded');
-    if (loaded.length === 0) {
-      await document.fonts.load('700 16px Tajawal');
-    }
-    // جلب ملف الخط مباشرة
     const urls = [
       'https://fonts.gstatic.com/s/tajawal/v11/Iura6YBj_oCad4k1nzSrC45I.woff2',
       'https://fonts.gstatic.com/s/tajawal/v11/Iura6YBj_oCad4k1nzS2C45I.woff2',
@@ -520,49 +513,96 @@ async function getFontBase64() {
   } catch(e) { return ''; }
 }
 
+/* ══ حفظ الفاتورة كصورة ══ */
 async function saveAsJpg(){
-  const paper=document.getElementById('invoice-paper');
-  const btn=document.querySelector('.btn-save');
-  btn.textContent='⏳ جاري الحفظ...';btn.disabled=true;
-  try{
+  const paper = document.getElementById('invoice-paper');
+  const btn   = document.querySelector('.btn-save');
+  btn.textContent = '⏳ جاري التحضير...';
+  btn.disabled = true;
+
+  try {
     await document.fonts.ready;
     const fontCSS = await getFontBase64();
-    await new Promise(r=>setTimeout(r,200));
+    await new Promise(r => setTimeout(r, 200));
 
-    const c=await html2canvas(paper,{
-      scale:3,
-      useCORS:true,
-      allowTaint:true,
-      backgroundColor:'#ffffff',
-      logging:false,
-      onclone:(cloneDoc)=>{
-        // حقن الخط كـ base64 في المستند المستنسخ
+    const canvas = await html2canvas(paper, {
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      onclone: (cloneDoc) => {
         const style = cloneDoc.createElement('style');
         style.textContent = fontCSS + `
           * { font-family: 'Tajawal', Arial, sans-serif !important; }
           [dir="ltr"], .mono, .inv-val.mono { font-family: monospace !important; }
         `;
         cloneDoc.head.appendChild(style);
-        // انتظر تطبيق الأنماط
         return new Promise(r => setTimeout(r, 300));
       }
     });
-    const l=document.createElement('a');
-    l.download='فاتورة_اشتراك.jpg';
-    l.href=c.toDataURL('image/jpeg',0.95);
-    l.click();
-  }catch(e){
+
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+
+    /* كشف الموبايل */
+    const isMobile = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      /* ══ موبايل: افتح الصورة في تاب جديد ══
+         المستخدم يضغط مطولاً على الصورة → يظهر "حفظ الصورة" */
+      const win = window.open('', '_blank');
+      if (win) {
+        win.document.write(`<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>فاتورة اشتراك</title>
+<style>
+  html,body{margin:0;padding:0;background:#111;min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  img{max-width:100%;display:block;border-radius:10px;
+      box-shadow:0 6px 24px rgba(0,0,0,0.6);}
+  p{color:#aaa;font-family:sans-serif;font-size:14px;
+    text-align:center;margin:14px 10px 0;line-height:1.6;}
+</style>
+</head><body>
+  <img src="${dataUrl}" alt="فاتورة الاشتراك">
+  <p>📥 اضغط مطولاً على الصورة لحفظها في الاستوديو</p>
+</body></html>`);
+        win.document.close();
+      } else {
+        /* إذا منع المتصفح فتح النافذة → حاول التحميل المباشر كـ fallback */
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'فاتورة_اشتراك.jpg';
+        a.click();
+      }
+    } else {
+      /* ══ ديسكتوب: تحميل مباشر ══ */
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = 'فاتورة_اشتراك.jpg';
+      a.click();
+    }
+
+  } catch(e) {
     console.error(e);
-    alert('حدث خطأ: '+e.message);
+    alert('حدث خطأ: ' + e.message);
   }
-  btn.textContent='💾 حفظ كصورة JPG';btn.disabled=false;
+
+  btn.textContent = '💾 حفظ كصورة JPG';
+  btn.disabled = false;
 }
 
-document.getElementById('invoice-modal').addEventListener('click',e=>{if(e.target===document.getElementById('invoice-modal'))closeInvoice();});
-document.getElementById('add-modal').addEventListener('click',e=>{if(e.target===document.getElementById('add-modal'))closeAddModal();});
+document.getElementById('invoice-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('invoice-modal')) closeInvoice();
+});
+document.getElementById('add-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('add-modal')) closeAddModal();
+});
 
-// تحميل الخط مسبقاً عند فتح الصفحة
-document.fonts.load('800 16px Tajawal').then(()=>document.fonts.load('700 14px Tajawal'));
+/* تحميل الخط مسبقاً */
+document.fonts.load('800 16px Tajawal').then(() => document.fonts.load('700 14px Tajawal'));
 </script>
 </body>
 </html>
